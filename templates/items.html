@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>BykovStorage</title>
+    </head>
+    <body>
+        <a href="/additem">Add item</a><br>
+        <br>
+        List items here        <br>
+        <table>
+            <tr><td>ID</td><td>Item name</td><td>Item Icon</td></tr>
+        {{range .}}
+            <tr>
+         <td>{{.ID}}</td> <td>{{.Name}}</td><td> {{.Icon}}</td>
+            </tr>
+        {{end}}
+        </table>
+
+        <form action="/" method="post">
+            <input type="hidden" name="action" value="logout">
+            <input type="submit" value="Logout">
+        </form>
+    </body>
+</html>

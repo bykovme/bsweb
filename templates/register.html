@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>BykovStorage</title>
+    </head>
+    <body>
+        <span style="color:red;">{{.ErrorText}}</span>
+
+        <form action="/" method="post">
+            <select name="cypher">
+                {{range .Cyphers}}
+                <option>{{.}}</option>
+                {{end}}
+            </select>
+            Enter new Master Password: <br>
+            <input type="password" name="password"><br>
+            Confirm new Master Password: <br>
+            <input type="password" name="password_confirm"><br>
+            <input type="submit" value="Register">
+        </form>
+    </body>
+</html>

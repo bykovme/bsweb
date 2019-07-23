@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>BykovStorage</title>
+    </head>
+    <body>
+       Add new item
+        <form action="/additem" method="post">
+            <input type="hidden" name="action" value="additem">
+            Item name:  <input type="text" name="item_name"><br>
+            Icon name: <input type="text" name="item_icon"><br>
+            <input type="submit" value="Add item">
+        </form>
+
+        <a href="/">Go back</a>
+        <form action="/" method="post">
+            <input type="hidden" name="action" value="logout">
+            <input type="submit" value="Logout">
+        </form>
+    </body>
+</html>
