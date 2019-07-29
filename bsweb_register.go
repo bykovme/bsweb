@@ -60,7 +60,7 @@ func setMasterPassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Print("Set new password and start working")
-	err = bsInstance.SetPassword(password)
+	err = bsInstance.Unlock(password)
 	if err != nil {
 		log.Fatalln("Error to open with new password:" + err.Error())
 		return

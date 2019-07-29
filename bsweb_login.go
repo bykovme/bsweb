@@ -30,7 +30,7 @@ func checkPassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	bsInstance := bykovstorage.GetInstance()
-	err = bsInstance.SetPassword(password)
+	err = bsInstance.Unlock(password)
 	if err != nil && err.Error() == bykovstorage.BSERR00010EncWrongPassword {
 		http.Redirect(w, r, "/?err=ERR00005", 302)
 		return
