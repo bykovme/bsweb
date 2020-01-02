@@ -1,15 +1,14 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/bykovme/bslib"
 )
 
-func processMain(w http.ResponseWriter, r *http.Request) {
-	bsInstance := bykovstorage.GetInstance()
+func processMain(w http.ResponseWriter, _ *http.Request) {
+	bsInstance := bslib.GetInstance()
 	items, err := bsInstance.ReadAllItems()
 
 	if err != nil {
@@ -17,6 +16,8 @@ func processMain(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	t, _ := template.ParseFiles("templates/items.html")
-	t.Execute(w, items)
+	err = renderHTMLTemplate(w, "items", items)
+	if err != nil {
+		ErrorPage(w, "Error", err.Error())
+	}
 }

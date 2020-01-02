@@ -41,14 +41,14 @@ func addItem(w http.ResponseWriter, r *http.Request) {
 		itemIcon = "default"
 	}
 
-	bsInstance := bykovstorage.GetInstance()
+	bsInstance := bslib.GetInstance()
 	if bsInstance.IsLocked() == true {
 		log.Println("Encryption is locked")
 		http.Redirect(w, r, "/?err=ERR00007", 302)
 		return
 	}
 
-	_, err := bsInstance.AddNewItem(bykovstorage.JSONInputUpdateItem{ItemName: itemName, ItemIcon: itemIcon})
+	_, err := bsInstance.AddNewItem(bslib.JSONInputUpdateItem{ItemName: itemName, ItemIcon: itemIcon})
 	if err != nil {
 		log.Println(err.Error())
 		http.Redirect(w, r, "/?err=ERR00007", 302)

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 
@@ -51,7 +50,7 @@ func setMasterPassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bsInstance := bykovstorage.GetInstance()
+	bsInstance := bslib.GetInstance()
 	log.Printf("Sign up, password: %s, cypher: %s", password, cypher)
 	err = bsInstance.SetNewPassword(password, cypher)
 	if err != nil {
@@ -71,11 +70,7 @@ func setMasterPassword(w http.ResponseWriter, r *http.Request) {
 
 func showRegisterPage(w http.ResponseWriter, r *http.Request) {
 	var rf RegisterPage
-	log.Println("Loading register page template")
-	t, err := template.ParseFiles("templates/register.html")
-	if err != nil {
-		log.Fatal("Loading register page failed: " + err.Error())
-	}
+
 	log.Println("Get errors, if any")
 	errMsg, err := getValueByName(r, "err")
 	if err == nil {
@@ -85,9 +80,12 @@ func showRegisterPage(w http.ResponseWriter, r *http.Request) {
 		}
 		rf = RegisterPage{ErrorText: errText}
 	}
-	bsInstance := bykovstorage.GetInstance()
+	bsInstance := bslib.GetInstance()
 
 	rf.Cyphers = bsInstance.GetAvailableCyphers()
-	log.Println("Execute template, show the page")
-	t.Execute(w, rf)
+	err = renderHTMLTemplate(w, "register", rf)
+	if err != nil {
+		ErrorPage(w, "Error", err.Error())
+	}
+
 }

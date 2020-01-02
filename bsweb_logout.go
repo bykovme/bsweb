@@ -7,7 +7,10 @@ import (
 )
 
 func processLogout(w http.ResponseWriter, r *http.Request) {
-	bsInstance := bykovstorage.GetInstance()
-	bsInstance.Lock()
+	bsInstance := bslib.GetInstance()
+	if err := bsInstance.Lock(); err != nil {
+		ErrorPage(w, "Error", err.Error())
+		return
+	}
 	http.Redirect(w, r, "/", 302)
 }

@@ -7,13 +7,6 @@ import (
 	"github.com/bykovme/bslib"
 )
 
-func mainPage(w http.ResponseWriter, r *http.Request) {
-	if !checkLockAndStandardActions(w, r) {
-		log.Println("Show main screen")
-		processMain(w, r)
-	}
-}
-
 func addItemPage(w http.ResponseWriter, r *http.Request) {
 	if !checkLockAndStandardActions(w, r) {
 		log.Println("Show add item screen")
@@ -21,31 +14,78 @@ func addItemPage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handlerFavIcon(w http.ResponseWriter, r *http.Request) {
+func handlerFavIcon(_ http.ResponseWriter, _ *http.Request) {
 	// empty handler for favicon just to remove calling any other router for favicon
 }
 
 func main() {
 
+	err := initApp()
+	if err != nil {
+		log.Fatal("Initiation error: " + err.Error())
+		return
+	}
+
 	log.Println("BSWEB has started")
 
-	bsInstance := bykovstorage.GetInstance()
+	bsInstance := bslib.GetInstance()
 	log.Print("BSWEB is initiating ")
-	err := bsInstance.Open("bs.sqlite")
+	err = bsInstance.Open(loadedConfig.DBPath)
 	if err != nil {
 		log.Fatal("Initiation error: " + err.Error())
 		return
 	}
 
 	log.Println("BSWEB is setting handlers")
-	http.Handle("/images/", http.FileServer(http.Dir("path/to/file")))
+
+	http.HandleFunc("/assets/", ServeAssetsHTTP)
 	http.HandleFunc("/favicon.ico", handlerFavIcon)
-	http.HandleFunc("/additem", addItemPage) // adding item router
-	http.HandleFunc("/", mainPage)           // set router
+	//http.HandleFunc("/additem", addItemPage) // adding item router
+	http.HandleFunc("/", ServeHTTP) // set router
 	//
-	err = http.ListenAndServe(":29568", nil) // set listen port "bykov" :)
+	err = http.ListenAndServe(":"+loadedConfig.Port, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 
+}
+
+func ServeAssetsHTTP(w http.ResponseWriter, r *http.Request) {
+	shortPath := r.URL.Path
+	fullPath := loadedConfig.AssetsPath + "/" + shortPath[1:]
+	http.ServeFile(w, r, fullPath)
+}
+
+func ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var head string
+	if checkLockAndStandardActions(w, r) {
+		return
+	}
+	head, r.URL.Path = ShiftPath(r.URL.Path)
+
+	switch head {
+
+	case "additem":
+		addItemPage(w, r)
+	default:
+		processMain(w, r)
+	}
+}
+
+func checkLockAndStandardActions(w http.ResponseWriter, r *http.Request) bool {
+
+	action := getAction(r)
+	bsInstance := bslib.GetInstance()
+	if action == "logout" {
+		processLogout(w, r)
+	} else if bsInstance.IsNew() == true {
+		log.Println("New storage, start sign up process")
+		processRegister(w, r)
+	} else if bsInstance.IsLocked() == true {
+		log.Println("Storage is locked, show login page")
+		processLogin(w, r)
+	} else {
+		return false
+	}
+	return true
 }

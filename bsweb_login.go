@@ -1,6 +1,7 @@
 package main
 
 import (
+	bykovstorage "gitlab.com/bkvstorage/bslib"
 	"html/template"
 	"log"
 	"net/http"
@@ -29,7 +30,7 @@ func checkPassword(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/?err=ERR00001", 302)
 		return
 	}
-	bsInstance := bykovstorage.GetInstance()
+	bsInstance := bslib.GetInstance()
 	err = bsInstance.Unlock(password)
 	if err != nil && err.Error() == bykovstorage.BSERR00010EncWrongPassword {
 		http.Redirect(w, r, "/?err=ERR00005", 302)
