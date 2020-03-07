@@ -67,6 +67,8 @@ func ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case "additem":
 		addItemPage(w, r)
+	case "items":
+		viewItemPage(w, r)
 	default:
 		processMain(w, r)
 	}

@@ -1,40 +1,49 @@
 <div class="section mt-10 mb-3">
     <div class="container">
 
-<div class="row align-items-center" >
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6 col-12 mb-2">
-        <div>
-            <br>
-            <div class="card">
-                <div class="card-header">
-                    <span class="lead font-weight-bold">BSWeb&nbsp;&nbsp;</span>
-                    <div class="float-right"><a href="/additem"><i class="fas fa-plus-square fa-2x text-dark"></i></a></div>
-                </div>
-                <div class="card-body" style="padding: 0;">
-                    <div class="list-group">
-                {{range .}}
-                        <a href="/items/{{.ID}}" class="list-group-item list-group-item-action lead text-truncate ">
-                            <i class="{{.Icon}} fa-2x fa-fw" ></i>
-                            &nbsp;<span class="align-text-bottom ">{{.Name}}</span>
-                        </a>
-                {{end}}
+        <div class="row align-items-center" >
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 col-12 mb-2">
+                <form action="/" method="post">
+                    <input type="hidden" name="action" value="logout">
+                    <button type="submit" class="btn-dark rounded" ><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row align-items-center" >
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 col-12 mb-2">
+                <div>
+                    <br>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="lead font-weight-bold">BSWeb&nbsp;&nbsp;</span>
+                            <div class="float-right"><a href="/additem"><i class="fas fa-plus-square fa-2x text-dark"></i></a></div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="list-group">
+                        {{range .}}
+                                <a href="/items/{{.ID}}" class="list-group-item list-group-item-action lead text-truncate ">
+                                    <i class="{{.Icon}} fa-2x fa-fw" ></i>
+                                    &nbsp;<span class="align-text-bottom ">{{.Name}}</span>
+                                </a>
+                        {{end}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="row align-items-center" >
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6 col-12 mb-2">
-        <form action="/" method="post">
-            <input type="hidden" name="action" value="logout">
-            <input class="btn btn-dark" type="submit" value="Logout">
-        </form>
-    </div>
-</div>
+        <div class="row align-items-center" >
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 col-12 mb-2">
+                <form action="/" method="post">
+                    <a class="btn btn-danger rounded text-light" ><i class="fas fa-sign-out-alt"></i> Settings</a>
+                </form>
+            </div>
+        </div>
 
     </div>
 </div>

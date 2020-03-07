@@ -48,7 +48,14 @@ func addItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := bsInstance.AddNewItem(bslib.JSONInputUpdateItem{ItemName: itemName, ItemIcon: itemIcon})
+	_, err := bsInstance.AddNewItem(
+		bslib.UpdateItemForm{
+			BSItem: bslib.BSItem{
+				Name: itemName,
+				Icon: itemIcon,
+			},
+		},
+	)
 	if err != nil {
 		log.Println(err.Error())
 		http.Redirect(w, r, "/?err=ERR00007", 302)

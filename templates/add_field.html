@@ -1,0 +1,41 @@
+<div class="section mt-10 mb-3">
+    <div class="container">
+
+        <div class="row align-items-center" >
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 col-12 mb-2">
+                <div>
+                    <br>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="lead font-weight-bold"><i class="{{.Item.Icon}} fa-2x fa-fw" ></i> &nbsp;&nbsp;{{.Item.Name}}&nbsp;&nbsp;</span>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <form action="/items/{{.Item.ID}}/addfield" method="post">
+                                <input class="form-control" type="text" name="field_name" placeholder="Field name" >
+                                <input class="form-control" type="text" name="field_icon" placeholder="Field icon" >
+                                <input class="form-control" type="text" name="value_type" placeholder="Field value type" >
+                                <input class="form-control" type="text" name="field_value" placeholder="Field value" >
+                                <input class="btn btn-secondary btn-block" type="submit" value="Add">
+                                {{ if .IsError}}
+
+                                    <div class="alert alert-danger" role="alert">
+                                        {{.ErrorText}}
+                                    </div>
+                                {{end}}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center" >
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 col-12 mb-2">
+                <a href="/items/{{.Item.ID}}" class="btn btn-success">Back</a>
+            </div>
+        </div>
+
+    </div>
+</div>

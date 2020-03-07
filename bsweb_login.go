@@ -1,10 +1,10 @@
 package main
 
 import (
-	bykovstorage "gitlab.com/bkvstorage/bslib"
-	"html/template"
 	"log"
 	"net/http"
+
+	bykovstorage "gitlab.com/bkvstorage/bslib"
 
 	"github.com/bykovme/bslib"
 )
@@ -12,6 +12,7 @@ import (
 // LoginPage - registration page structure
 type LoginPage struct {
 	ErrorText string
+	IsError   bool
 }
 
 func processLogin(w http.ResponseWriter, r *http.Request) {
@@ -48,16 +49,40 @@ func checkPassword(w http.ResponseWriter, r *http.Request) {
 }
 
 func showLoginPage(w http.ResponseWriter, r *http.Request) {
-	var lp LoginPage
-	t, _ := template.ParseFiles("templates/login.html")
+	//bsInstance := bslib.GetInstance()
+	//items, err := bsInstance.ReadAllItems()
+	//
+	//if err != nil {
+	//	log.Println(err.Error())
+	//	return
+	//}
+
+	var loginPage LoginPage
+
 	errMsg, err := getValueByName(r, "err")
 	if err == nil {
 		errText, isFound := bsErrors[errMsg]
 		if isFound == false {
 			errText = "Unknown error"
 		}
-		lp = LoginPage{ErrorText: errText}
+		loginPage = LoginPage{ErrorText: errText, IsError: true}
 	}
-	//bsInstance := bykovstorage.GetInstance()
-	t.Execute(w, lp)
+
+	err = renderHTMLTemplate(w, "login", loginPage)
+	if err != nil {
+		ErrorPage(w, "Error", err.Error())
+	}
+
+	//var lp LoginPage
+	//t, _ := template.ParseFiles("templates/login.html")
+	//errMsg, err := getValueByName(r, "err")
+	//if err == nil {
+	//	errText, isFound := bsErrors[errMsg]
+	//	if isFound == false {
+	//		errText = "Unknown error"
+	//	}
+	//	lp = LoginPage{ErrorText: errText}
+	//}
+	////bsInstance := bykovstorage.GetInstance()
+	//t.Execute(w, lp)
 }

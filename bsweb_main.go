@@ -9,7 +9,7 @@ import (
 
 func processMain(w http.ResponseWriter, _ *http.Request) {
 	bsInstance := bslib.GetInstance()
-	items, err := bsInstance.ReadAllItems()
+	items, err := bsInstance.ReadAllItems(false)
 
 	if err != nil {
 		log.Println(err.Error())

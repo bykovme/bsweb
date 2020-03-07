@@ -1,0 +1,48 @@
+<div class="section mt-10 mb-3">
+    <div class="container">
+
+<div class="row align-items-center" >
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6 col-12 mb-2">
+        <div>
+            <br>
+            <div class="card">
+                <div class="card-header">
+                    <span class="lead font-weight-bold"><i class="{{.Item.Icon}} fa-2x fa-fw" ></i> &nbsp;&nbsp;{{.Item.Name}}&nbsp;&nbsp;</span>
+
+                    <div class="float-right"><a href="/items/{{.Item.ID}}/addfield"><i class="fas fa-plus-square fa-2x text-dark"></i></a></div>
+
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="list-group">
+                        {{ $itemId := .Item.ID}}
+                        {{range .Item.Fields}}
+                            <a href="/items/{{$itemId}}/fields/{{.ID}}" class="list-group-item list-group-item-action lead text-truncate ">
+                                <i class="{{ .Icon}} fa-2x fa-fw" ></i>
+                                &nbsp;<span class="align-text-bottom ">{{.Name}}</span><br>
+                                <span class="align-text-bottom ">{{.Value}}</span>
+                            </a>
+                        {{end}}
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center" >
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6 col-12 mb-2">
+
+        <a href="#" class="btn btn-danger"><i class="" ></i> Delete</a>
+        <a href="#" class="btn btn-warning">Edit</a>
+        <a href="/" class="btn btn-success">Back</a>
+
+    </div>
+</div>
+
+    </div>
+</div>
