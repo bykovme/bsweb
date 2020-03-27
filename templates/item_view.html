@@ -17,7 +17,14 @@
                     <div class="list-group">
                         {{ $itemId := .Item.ID}}
                         {{range .Item.Fields}}
-                            <a href="/items/{{$itemId}}/fields/{{.ID}}" class="list-group-item list-group-item-action lead text-truncate ">
+                           <!-- <a href="/items/{{$itemId}}/fields/{{.ID}}" class="list-group-item list-group-item-action lead text-truncate "> -->
+                           <a class="list-group-item list-group-item-action lead text-truncate"
+                              href="#"
+                              data-field-id="{{.ID}}"
+                              data-field-name="{{.Name}}"
+                              data-field-value="{{.Value}}"
+                              data-toggle="modal"
+                              data-target="#fieldModal">
                                 <i class="{{ .Icon}} fa-2x fa-fw" ></i>
                                 &nbsp;<span class="align-text-bottom ">{{.Name}}</span><br>
                                 <span class="align-text-bottom ">{{.Value}}</span>
@@ -46,3 +53,33 @@
 
     </div>
 </div>
+
+
+<div class="modal fade" id="fieldModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerlabel">Header here</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Show something</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="">Delete</a>
+                <a class="btn btn-primary" href="">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).on("click", ".list-group-item", function () {
+        var fieldName = $(this).data('field-name');
+        alert(fieldName);
+        $(".modal-body #headerlabel").val( fieldName );
+        // As pointed out in comments,
+        // it is unnecessary to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    });
+</script>
