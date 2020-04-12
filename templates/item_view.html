@@ -23,16 +23,20 @@
                               data-field-id="{{.ID}}"
                               data-field-name="{{.Name}}"
                               data-field-value="{{.Value}}"
-                              data-toggle="modal"
-                              data-target="#fieldModal">
-                                <i class="{{ .Icon}} fa-2x fa-fw" ></i>
-                                &nbsp;<span class="align-text-bottom ">{{.Name}}</span><br>
-                                <span class="align-text-bottom ">{{.Value}}</span>
+                              data-toggle="collapse"
+                              data-target="#btns{{.ID}}"
+                              aria-expanded="false"
+                              aria-controls="btns{{.ID}}">
+                               <i class="{{ .Icon}} fa-2x fa-fw" ></i>
+                               &nbsp;<span class="align-text-bottom ">{{.Name}}</span><br>
+                               <span class="align-text-bottom ">{{.Value}}</span>
                             </a>
+                           <div class="btn-group collapse" role="group" aria-label="Basic example" id="btns{{.ID}}">
+                               <button class="btn btn-secondary" type="button" data-target="#btns{{.ID}}" data-toggle="collapse" aria-controls="btns{{.ID}}">Cancel</button>
+                               <button class="btn btn-danger" onclick="showModalDelete('{{.ID}}','{{.Name}}', '{{.Value}}');return;" >Delete</button>
+                               <a class="btn btn-primary" href="#" onclick="showModal('edit','{{.ID}}','{{.Name}}', '{{.Value}}');" >Edit</a>
+                           </div>
                         {{end}}
-
-
-
                     </div>
                 </div>
             </div>
@@ -43,11 +47,7 @@
 <div class="row align-items-center" >
     <div class="col-lg-3"></div>
     <div class="col-lg-6 col-12 mb-2">
-
-        <a href="#" class="btn btn-danger"><i class="" ></i> Delete</a>
-        <a href="#" class="btn btn-warning">Edit</a>
         <a href="/" class="btn btn-success">Back</a>
-
     </div>
 </div>
 
@@ -55,31 +55,55 @@
 </div>
 
 
-<div class="modal fade" id="fieldModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="fieldModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <form method="post" >
             <div class="modal-header">
                 <h5 class="modal-title" id="headerlabel">Header here</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Show something</div>
+            <div class="modal-body" id="editBody"><input type="text" /> </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="">Delete</a>
-                <a class="btn btn-primary" href="">Edit</a>
+                <button class="btn btn-danger" type="submit">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="fieldModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerlabel">Confirm deletion</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="deleteBody">
+                Are you sure that you want to delete the field below?
+                <br><strong><span id="field_text" class="align-text-bottom "></span></strong>
+            </div>
+            <div class="modal-footer">
+                <form action="/items/{{.Item.ID}}/deletefield" method="post" >
+                    <input type="hidden" id="field_id" value="" name="field_id">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    $(document).on("click", ".list-group-item", function () {
-        var fieldName = $(this).data('field-name');
-        alert(fieldName);
-        $(".modal-body #headerlabel").val( fieldName );
-        // As pointed out in comments,
-        // it is unnecessary to have to manually call the modal.
-        // $('#addBookDialog').modal('show');
-    });
+
+    function showModalDelete( fieldId,  fieldName,  fieldValue) {
+        let $title = $("#fieldModalDelete .modal-title");
+        $("#field_id").val(fieldId)
+        $("#field_text").text(fieldName +": "+fieldValue);
+        $("#fieldModalDelete").modal();
+    }
 </script>
